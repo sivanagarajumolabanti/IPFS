@@ -1,0 +1,567 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block js %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+{% endblock %}
+
+{% block title %} Edit Contract {% endblock %}
+
+{%block content %}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-12">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Contract ID</label>
+									<input type="text"
+									   class="form-control border-input"
+									   disabled placeholder="Company"
+									   name="id" value='{{ data.id }}' readonly>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Status</label>
+									{% if data.status == "1" %}
+										<input type="text"
+									   class="form-control border-input"
+									   disabled placeholder="Company"
+											   value="Approved" readonly/>
+									{% else %}
+										<input type="text"
+									   class="form-control border-input"
+									   disabled placeholder="Company"
+											   value="Pending" readonly/>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="form-group">
+								<label>Amount paid</label>
+								<input type="text"
+									   class="form-control border-input"
+									   placeholder="Last Name" name="amount_paid" value='{{ data.amount_paid }}'>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Installments</label>
+									<input type="text"
+									   class="form-control border-input"
+									   placeholder="Last Name" name="installments" value='{{ data.installments }}'>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Valid Date</label>
+									<input type="text"
+									   class="form-control border-input" name="validity"
+									   value='{{ data.validity }}' readonly>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>Name</label>
+									<input type="text"
+									   class="form-control border-input"
+									   disabled placeholder="Company"
+									   name="name" value='{{ data.name }}' readonly>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+								<label>Vendor</label>
+								<input type="text" class="form-control border-input" placeholder="Username" name="vendor" value='{{ data.vendor }}' readonly>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Amount</label>
+									<input type="text"
+									   class="form-control" name="amount"
+									   value='{{ data.amount }}' readonly>
+								</div>
+							</div>
+						</div>
+
+						<ul class="nav nav-tabs">
+							<li class="active"><a data-toggle="tab" href="#home">Contract</a></li>
+							<li><a data-toggle="tab" href="#menu1">SOW</a></li>
+							<li><a data-toggle="tab" href="#menu2">Invoice</a></li>
+						</ul>
+
+						<div class="tab-content">
+							<div id="home" class="tab-pane fade in active">
+								<form method="POST" class="post-form" enctype="multipart/form-data">
+									{% csrf_token %}
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"></label>
+										<div class="col-sm-4">
+											<h3>Edit Contract Details</h3>
+										</div>
+									</div>
+
+									{% for docuobj in docusign %}
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Docusign Files</label>
+											<div class="col-sm-1.5" style="padding-left:15px;">
+												<button type="button" class="btn btn-info btn-sm"
+													data-toggle="modal" data-target="#docusignModal{{ forloop.counter }}"> Click Here </button>
+												<!-- Modal -->
+												<div id="docusignModal{{ forloop.counter }}" class="modal fade" role="dialog">
+													<div class="modal-dialog modal-lg">
+														<!-- Modal content -->
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title">Docusign Document</h4>
+															</div>
+															<div class="modal-body">
+																<embed src="{{ docuobj.files.url }}" frameborder="0" width="100%" height="400px">
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">comments</label>
+										<div class="col-sm-4">
+											{% if data.comments %}
+												<input class="form-control" type="text" value="{{ data.comments }}" readonly>
+											{% else %}
+												<textarea rows="4" cols="50" name="comments"
+														  class="form-control" placeholder="Enter text here..."></textarea>
+											{% endif %}
+										</div>
+									</div>
+									<input type="text" name="smart_contract" value="{{data.smart_contract }}" readonly hidden/>
+
+								{% for fileobj in data.files.all %}
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Uploaded Files</label>
+										<div class="col-sm-1.5" style="padding-left:15px;">
+											<button type="button" class="btn btn-info btn-sm"
+													data-toggle="modal" data-target="#myModal{{ forloop.counter }}"> View Document </button>
+											<!-- Modal -->
+											<div id="myModal{{ forloop.counter }}" class="modal fade" role="dialog">
+												<div class="modal-dialog modal-lg">
+													<!-- Modal content -->
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title">Uploaded Document</h4>
+														</div>
+														<div class="modal-body">
+															<embed src="{{ fileobj.file.url }}" frameborder="0"
+																   width="100%" height="400px">
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default"
+																		data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+
+								{% if request.user.is_staff %}
+									{% for appr in approvals %}
+										{% if appr.comments %}
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">{{ appr.user.username }}</label>
+												<div class="col-sm-4">
+													<input class="form-control" type="text" value='{{ appr.comments }}' readonly>
+												</div>
+											</div>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">comments</label>
+										<div class="col-sm-4">
+											<textarea rows="4" cols="50"
+													  name="apprcomments" class="form-control"
+													  placeholder="Enter text here..."></textarea>
+										</div>
+									</div>
+								{% endif %}
+
+								{% if not approval %}
+									<div class="form-group row">
+										 <div class="form-group row">
+                            			    <label class="col-sm-2 col-form-label">Upload File</label>
+											 <div class="col-sm-1.5 btn btn-primary btn-sm float-left" style="margin-left:15px;">
+			                                    <input type="file" id="imgup1" name="files"
+				                                    onchange="document.getElementsByName('imgfn1')[0].value = document.getElementById('imgup1').value.split('\\').pop();">
+			                                    <span>Choose File</span>
+			                                    <input type="text" name="imgfn1" value="" readonly>
+            			                    </div>
+                       				     </div>
+									</div>
+
+
+										<!--<label class="col-sm-2 col-form-label">Upload File</label>-->
+										<!--<div class="col-sm-1.5 btn btn-primary btn-sm float-left" style="margin-left:15px;">-->
+											<!--<input type="file" name="MyFile" onchange="validatePDF(this)"/>-->
+											<!--<span> Choose File </span>-->
+											<!--<input class="file-path validate" type="file" multiple name="file" readonly>-->
+										<!--</div>-->
+									<!--</div>-->
+								{% endif %}
+
+								<input type="checkbox" id="declined_contract" hidden name="declined_contract"/>
+								{% if not request.user.is_staff and not approval and not data.smart_contract %}
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"></label>
+										<button type="submit"
+												class="btn btn-danger btn-fill btn-wd checkall" name="decline"
+												onclick="myFunction()">Decline</button>
+										<button type="submit" class="btn btn-primary" name="submit"
+												value="Submit">Sign With Docusign</button>
+									</div>
+								{% elif approval %}
+									<button type="submit" class="btn btn-primary"
+											name="submit" value="approval_return">Return</button>
+								{% elif request.user.is_staff and all_approve and data.status == "1" %}
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"></label>
+										<button type="submit" class="btn btn-primary"
+												name="submit" value="approval_return">Return</button>
+									</div>
+								{% elif request.user.is_staff and all_approve and not approve and not data.smart_contract %}
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"></label>
+										<button type="submit" class="btn btn-primary" name="submit"
+												value="Submit">Sign With Docusign</button>
+									</div>
+								{% elif not request.user.is_staff and not approval and data.smart_contract %}
+									<button type="submit" class="btn btn-primary"
+											name="submit" value="admin_submit">Approve</button>
+									<button type="submit" class="btn btn-danger btn-fill btn-wd checkall"
+											name="decline" onclick="myFunction()">Decline</button>
+								{% elif request.user.is_staff and all_approve and not approve and data.smart_contract %}
+									<button type="submit" class="btn btn-primary" name="submit"
+											value="admin_submit">Approve</button>
+									<button type="submit" class="btn btn-danger btn-fill btn-wd checkall"
+											name="decline" onclick="myFunction()">Decline</button>
+								{% else %}
+									<button type="submit" class="btn btn-primary" name="submit" value="admin_submit">Update</button>
+								{% endif %}
+
+								<script>
+    	                    		function myFunction() {
+        	                   			document.getElementById("declined_contract").checked = true;
+	        	                	}
+    	        	        	</script>
+								</form>
+							</div>
+
+							<div id="menu1" class="tab-pane fade">
+								<form method="POST" name="Sow" action="{% url 'detailedcontractsow' data.id %}"
+									  class="post-form" enctype="multipart/form-data">
+									{% csrf_token %}
+									<input type="text" class="hidden" placeholder="Username" name="vendor" value='{{ data.vendor }}' readonly>
+									<div class="form-group row">
+										<label class="col-sm-1 col-form-label"></label>
+										<div class="col-sm-4">
+											<h3>SOW Details</h3>
+										</div>
+									</div>
+
+									{% if request.user.is_staff  %}
+										{% if sow %}
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Uploaded Files</label>
+												<div class="col-sm-1.5" style="padding-left:15px;">
+													<button type="button" class="btn btn-info btn-sm"
+														data-toggle="modal" data-target="#sowDModal"> Click Here </button>
+													<!-- Modal -->
+
+													<div id="sowDModal" class="modal fade" role="dialog">
+														<div class="modal-dialog modal-lg">
+
+															<!-- Modal content -->
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h4 class="modal-title">Uploaded Document</h4>
+																</div>
+																<div class="modal-body">
+																	<embed src="{{ sow.file.url }}" frameborder="0" width="100%" height="400px">
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% else %}
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Upload File</label>
+												<div class="col-sm-1.5 btn btn-primary btn-sm float-left" style="margin-left:15px;">
+													<input type="file" name="MyFile" />
+													<span> Choose File </span>
+													<input class="file-path validate" type="file" name="file" readonly>
+												</div>
+											</div>
+
+											<br>
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">Contract Type</label>
+												<div class="col-sm-4">
+													<label class="radio-inline">
+														<input type="radio" name="smart_contract" value=1 id="smart_contract" checked> Smart Contract
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="smart_contract" value=0 id="smart_contract_no"> DocuSign Contract
+													</label>
+												</div>
+											</div>
+
+											<br>
+											<br>
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label"></label>
+												<div class="col-sm-4">
+													<button type="submit" class="btn btn-primary" class="btn btn-primary"
+															name="submit" value="Sow_create">Submit</button>
+												</div>
+											</div>
+										{% endif %}
+									{% else %}
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Uploaded Files</label>
+											<div class="col-sm-1.5" style="padding-left:15px;">
+												<button type="button" class="btn btn-info btn-sm"
+													data-toggle="modal" data-target="#sowModal"> Click Here </button>
+												<!-- Modal -->
+
+												<div id="sowModal" class="modal fade" role="dialog">
+													<div class="modal-dialog modal-lg">
+
+														<!-- Modal content -->
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title">Uploaded Document</h4>
+															</div>
+															<div class="modal-body">
+																<embed src="{{ sow.file.url }}" frameborder="0" width="100%" height="400px">
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label"></label>
+											<div class="col-sm-4">
+												<button type="submit" class="btn btn-primary"
+													name="submit" value="Sow_approve">Approve</button>
+											</div>
+										</div>
+									{% endif %}
+
+									</br>
+									<br>
+									<div class="form-group row">
+										<label class="col-sm-2 col-form-label">Comments</label>
+										{% for appr in approvals %}
+											<div class="col-sm-6 col-md-6">
+												{% if appr.comments %}
+													<input class="form-control" type="text" value='{{ appr.comments }}' readonly>
+												{% endif %}
+											</div>
+										{% endfor %}
+									</div>
+								</form>
+							</div>
+
+							<div id="menu2" class="tab-pane fade">
+								<form method="POST" name="Invoice"
+									  action="{% url 'detailedcontractinvoice' data.id %}" class="post-form"
+									  enctype="multipart/form-data">
+									{% csrf_token %}
+									{% if request.user.is_staff %}
+										<div class="form-group row">
+											<label class="col-sm-1 col-form-label"></label>
+											<div class="col-sm-4">
+												<h3>Invoice Details</h3>
+											</div>
+										</div>
+										<div class="content table-responsive table-full-width">
+											<h4 class="title">Approval Status</h4>
+											<table class="table table-striped">
+												<thead>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Status</th>
+													<th>File</th>
+												</thead>
+
+												{% for invoice in invoices %}
+													<tbody>
+														<tr>
+															<td>{{ invoice.id }}</td>
+															<td>{{ invoice.user.username }}</td>
+															{% if invoice.status == '2' %}
+																<td> Created </td>
+															{% elif invoice.status == '0' %}
+																<td> Approved </td>
+															{% else %}
+																<td> Not Approved </td>
+															{% endif %}
+															<td>
+																<button type="button" class="btn btn-info btn-sm"
+																		data-toggle="modal" data-target="#invModal{{ forloop.counter }}"> Click Here </button>
+
+																<div id="invModal{{ forloop.counter }}" class="modal fade" role="dialog">
+																	<div class="modal-dialog modal-lg">
+
+																	<!-- Modal content -->
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h4 class="modal-title">Uploaded Document</h4>
+																			</div>
+																			<div class="modal-body">
+																				<embed src="{{ invoice.file.url }}" frameborder="0" width="100%" height="400px">
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</td>
+
+															<td>
+																{% if invoice.status == '0' %}
+																	<a href="{% url 'declineinvoice' invoice.id %}">Decline</a>
+																{% else %}
+																	<a href="{% url 'approveinvoice' invoice.id %}">Approve</a>
+																{% endif %}
+															</td>
+														</tr>
+													</tbody>
+												{% endfor %}
+											</table>
+										</div>
+
+										<!--</br>-->
+										<!--<div class="row">-->
+											<!--<button type="submit"  class="btn btn-primary"-->
+													<!--name="submit" value="invoice_generate">Generate</button>-->
+										<!--</div>-->
+									{% else %}
+										{% if invoices %}
+											<div class="form-group row">
+												<label class="col-sm-1 col-form-label"></label>
+												<div class="col-sm-4">
+													<h3>Invoice Details</h3>
+												</div>
+											</div>
+											<div class="content table-responsive table-full-width">
+												<h4 class="title">Approval Status</h4>
+												<table class="table table-striped">
+													<thead>
+														<th>ID</th>
+														<th>Name</th>
+														<th>Status</th>
+														<th>File</th>
+													</thead>
+
+													<tbody>
+														{% for invoice in invoices %}
+														<tr>
+															<td>{{ invoice.id }}</td>
+															<td>{{ invoice.user.username }}</td>
+															{% if invoice.status == '2' %}
+																<td> Created </td>
+															{% elif invoice.status == '0' %}
+																<td> Approved </td>
+															{% else %}
+																<td> Not Approved </td>
+															{% endif %}
+															<td>
+																<button type="button" class="btn btn-info btn-sm"
+																		data-toggle="modal" data-target="#invModal"> Click Here </button>
+
+																<div id="invModal" class="modal fade" role="dialog">
+																	<div class="modal-dialog modal-lg">
+
+																	<!-- Modal content -->
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h4 class="modal-title">Uploaded Document</h4>
+																			</div>
+																			<div class="modal-body">
+																				<embed src="{{ invoice.file.url }}" frameborder="0" width="100%" height="400px">
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													{% endfor %}
+													</tbody>
+											</table>
+										</div>
+										{% else %}
+											<div class="form-group row">
+												<br>
+												<label class="col-sm-2 col-form-label">Upload Invoice: </label>
+												<div class="col-sm-1.5 btn btn-primary btn-sm float-left" style="margin-left:15px;">
+													<input type="file" name="MyFile" />
+													<span> Choose File </span>
+													<input class="file-path validate" type="file" name="file" readonly>
+												</div>
+											</div>
+
+											</br>
+											<div class="row">
+												<button type="submit" class="btn btn-primary"
+														name="submit" value="invoice_submit">Submit</button>
+											</div>
+										{% endif %}
+									{% endif %}
+								</form>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

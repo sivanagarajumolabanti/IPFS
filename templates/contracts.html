@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %} Contracts {% endblock %}
+
+{%block content %}
+
+    {% if contract %}
+
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title"> My Contracts </h4>
+                       <div class="alert alert-info" {% if not success %}hidden {%endif %}>
+                            <button type="button" aria-hidden="true" class="close">×</button>
+                            <span> {{ success }} </span>
+                        </div>
+                      {% if request.user.is_staff %}
+                        <a href="{% url 'createcontract' %}" class="align-right button"> Create New </a>
+                      {% endif %}
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class=" text-primary">
+                          <tr>
+                              <th> Name </th>
+                              <th> Vendor </th>
+                              <th> Amount </th>
+                              <th>Amount Paid</th>
+                              <th> Installments </th>
+                              <th> Status </th>
+                              <th> Date </th>
+                              {% if not request.user.is_staff %}
+                                <th>Edit Contract</th>
+                              {% endif %}
+                              {% if request.user.is_staff %}
+                                <th>View Contract</th>
+                              {% endif %}
+                        </tr>
+                        </thead>
+
+                         <tbody>
+                             {% for contract in contract %}
+                             <tr>
+                                 <td>{{ contract.name }}</td>
+                                 <td>{{ contract.vendor }}</td>
+                                  <td>{{ contract.amount }}</td>
+                                  <td>{{ contract.amount_paid }}</td>
+                                  <td>{{ contract.installments }}</td>
+                                  {% if contract.status == "1" %}
+                                    <td> Approved </td>
+                                  {% elif contract.status == "2" %}
+                                    <td> Vendors Approved</td>
+                                  {% else %}
+                                    <td> Pending </td>
+                                  {% endif %}
+                                  <td>{{ contract.created_at }}</td>
+                                  <!--<td>{{ contract.upload_file }}</td>-->
+                                  {% if not request.user.is_staff %}
+                                    <td><a href="{% url 'detailedcontract' pk=contract.id %}">Edit</a> </td>
+                                  {% endif %}
+                                  {% if request.user.is_staff %}
+                                    <td><a href="{% url 'detailedcontract' pk=contract.id %}">View</a> </td>
+                                  {% endif %}
+                              </tr>
+                             {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+    {% else %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                      <span> No Contracts Found </span>
+                      {% if request.user.is_staff %}
+                        <a href="{% url 'createcontract' %}" class="align-right button"> Create New </a>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

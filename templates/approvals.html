@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} Users {% endblock %}
+
+{%block content %}
+    {% if data %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title">My Approval Requests</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                          <table class="table">
+                            <thead class=" text-primary">
+                              <th> Contract </th>
+                              <th> Status </th>
+                              <th> Type of Contract </th>
+                              <th> Approve Contract </th>
+                            </thead>
+
+                             <tbody>
+                                 {% for approval in data %}
+                                 <tr>
+                                     <td>{{ approval.contracts.name }}</td>
+
+                                     <td>
+                                         {% if approval.get_status_display == 'No' %} Pending {% else %} Approved {% endif %}
+                                     </td>
+                                     <td> {{ approval.get_contract_level_display }} </td>
+                                     <!--<td><a href="{% url 'approve' pk=approval.id %}">Click Here</a> </td>-->
+                                     <td><a href="{% url 'detailedcontract' pk=approval.contracts.id %}">Click Here</a> </td>
+                                  </tr>
+                                 {% endfor %}
+                             </tbody>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    {% else %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                      <span>No Requests</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

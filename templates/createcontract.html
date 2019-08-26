@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+
+{% block title %} Create Contract {% endblock %}
+
+{%block content %}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-user">
+                     <form method="POST" class="post-form"  enctype="multipart/form-data">
+                         {% csrf_token %}
+                         <div class="container">
+                             <br>
+                            <div class="form-group row">
+                                <label class="col-sm-1 col-form-label"></label>
+                                <div class="col-sm-4">
+                                    <h3>Enter Contract Details</h3>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="name" class="form-control" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Vendor</label>
+                                <div class="col-sm-4">
+                                    {{ form.vendor }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Amount</label>
+                                <div class="col-sm-4">
+                                    <input type="number" name="amount" class="form-control" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Amount paid</label>
+                                <div class="col-sm-4">
+                                    <input type="number" name="amount_paid" class="form-control" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Installments</label>
+                                <div class="col-sm-4">
+                                    <input type="number" name="installments" class="form-control" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Valid Date</label>
+                                <div class="col-sm-4">
+                                    {{ form.validity }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Contract Type</label>
+                                <div class="col-sm-4">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="smart_contract" value=1 id="smart_contract" checked> Smart Contract
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="smart_contract" value=0 id="smart_contract_no"> DocuSign Contract
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Comments</label>
+                                <div class="col-sm-4">
+                                 <input type="text" id="comments" class="form-control"  name="comments">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Upload File</label>
+                                <div class="col-sm-1.5 btn btn-primary btn-sm float-left" style="margin-left:15px;">
+                                    <input type="file" id="imgup1" name="files"
+                                    onchange="document.getElementsByName('imgfn1')[0].value = document.getElementById('imgup1').value.split('\\').pop();">
+                                    <span>Choose File</span>
+                                    <input type="text" name="imgfn1" value="" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+
+                         </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Extra JavaScript/CSS added manually in "Settings" tab -->
+<!-- Include jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+{% endblock %}

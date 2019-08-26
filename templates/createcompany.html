@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Create User {% endblock %}
+
+{%block content %}
+      <div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-user">
+                <form method="POST" class="post-form" >
+                      {% csrf_token %}
+                      <div class="card-header">
+                          <h5 class="card-title">Create User </h5>
+                      </div>
+                      <div class="card-body">
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-3 px-1">-->
+                              <!--<div class="form-group">-->
+                                <!--<label>User</label>-->
+                                <!--<div class="col-sm-4">-->
+                                   <!--{{ form.user }}-->
+                                <!--</div>-->
+                              <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="row">
+                            <div class="col-md-3 px-1">
+                              <div class="form-group">
+                                <div class="col-sm-12">
+                                    <span> Name </span>
+                                   <input type="text" class="form-control" placeholder="Please enter your Name" id="name" name="name">
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                          <div class="row">
+                            <div class="col-md-3 px-1">
+                                  <div class="form-group">
+                                    <label>Vendors</label>
+                                        <div class="col-sm-4">
+                                           {{ form.vendors }}
+                                        </div>
+                                  </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="update ml-auto mr-auto">
+                              <button type="submit" class="btn btn-primary btn-round">Submit</button>
+                            </div>
+                          </div>
+
+                      </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  {% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} Users {% endblock %}
+
+{%block content %}
+    {% if company %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title">Users</h4>
+                      <span>
+                          <a href="{% url 'createuser' %}" class="align-right button"> Create New</a>
+                      </span>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                          <table class="table">
+                            <thead class=" text-primary">
+                              <!--<th>  User </th>-->
+                              <th> Username </th>
+                              <th> Vendors </th>
+                              <th> Date </th>
+                            </thead>
+
+                             <tbody>
+                                 {% for comp in company %}
+                                 <tr>
+                                     <!--<td>{{ comp.user }}</td>-->
+                                     <td>{{ comp.name }}</td>
+                                     <td>{% for area in comp.vendors.all %}{{ area }}  {% endfor %}</td>
+                                     <td>{{ comp.created_at }}</td>
+                                  </tr>
+                                 {% endfor %}
+                             </tbody>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    {% else %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                      <span>No Companies Found</span>
+                      <a href="{% url 'createuser' %}" class="align-right button"> Create New</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

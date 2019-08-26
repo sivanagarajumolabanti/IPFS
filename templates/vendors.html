@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{%block content %}
+    {% if vendor %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="card-title"> My Vendors</h4>
+                      <a href="{% url 'createvendor' %}" class="align-right button"> Create New</a>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class=" text-primary">
+                        <tr>
+
+                          <th>
+                            Vendor Name
+                          </th>
+                          <th>
+                            Date
+                          </th>
+                        </tr>
+                        </thead>
+                         <tbody>
+                             {% for vend in vendor %}
+                             <tr>
+
+                                 <td>{{ vend.name }}</td>
+                                 <td>{{ vend.created_at }}</td>
+                              </tr>
+                             {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+    {% else %}
+        <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                      <span>No Vendors Found</span>
+                      <a href="{% url 'createvendor' %}" class="align-right button"> Create New</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+
+
